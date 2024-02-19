@@ -66,6 +66,12 @@ class Profile(models.Model):
     user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
     role = models.BooleanField(default='Student')
     image = models.ImageField(upload_to='profileImgs', default='bee.jpg')
+    address01 = models.CharField(max_length=255, blank=True, null=True)
+    address02 = models.CharField(max_length=255, blank=True, null=True)
+    city = models.CharField(max_length=255, blank=True, null=True)
+    state = models.CharField(max_length=255, blank=True, null=True)
+    zip_code = models.CharField(max_length=255, blank=True, null=True)
+    phone = models.CharField(max_length=255, blank=True, null=True)
     def __str__(self):
         return f'{self.user.username} Profile'
     
@@ -76,12 +82,6 @@ def create_user_profile(sender, instance, created, **kwargs):
         post_save.connect(create_user_profile, sender=User)
 
 class Student(models.Model):
-    address01 = models.CharField(max_length=255, blank=True, null=True)
-    address02 = models.CharField(max_length=255, blank=True, null=True)
-    city = models.CharField(max_length=255, blank=True, null=True)
-    state = models.CharField(max_length=255, blank=True, null=True)
-    zip_code = models.CharField(max_length=255, blank=True, null=True)
-    phone = models.CharField(max_length=255, blank=True, null=True)
     enroll_date = models.DateField(max_length=255, blank=True, null=True)
     graduation_date = models.DateField(blank=True, null=True)
     disenroll_date = models.DateField(blank=True, null=True)
@@ -89,61 +89,59 @@ class Student(models.Model):
     student = models.ForeignKey(User, related_name='theStudent', on_delete=CASCADE)
 
 class Staff(models.Model):
-    address01 = models.CharField(max_length=255, blank=True, null=True)
-    address02 = models.CharField(max_length=255, blank=True, null=True)
-    city = models.CharField(max_length=255, blank=True, null=True)
-    state = models.CharField(max_length=255, blank=True, null=True)
-    zip_code = models.CharField(max_length=255, blank=True, null=True)
-    phone = models.CharField(max_length=255, blank=True, null=True)
     hire_date = models.DateField(blank=True, null=True)
     pay_rate = models.DateField(blank=True, null=True)
-    supervisor = models.ForeignKey(User, related_name='theSupervisor', on_delete=CASCADE)
+    department = models.ForeignKey(Department, related_name='theDepartment', on_delete=CASCADE)
     staff = models.ForeignKey(User, related_name='theStaff', on_delete=CASCADE)
+
+class Department(models.Model):
+    name = models.CharField(max_length=255, blank=True, null=True)
+    information = models.TextField()
+    supervisor = models.ForeignKey(User, related_name='theSuper', on_delete=CASCADE)
 
 class Course(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
     course_length = models.CharField(max_length=255, blank=True, null=True)
     course_info = models.CharField(max_length=255, blank=True, null=True)
+    active_course = models.BooleanField(default=1)
 
 class Hive(models.Model):
     hive_name = models.CharField(max_length=255, blank=True, null=True)
-    instructor = models.ForeignKey(User, related_name='theInstructor', on_delete=CASCADE)
-    pass
+    hive_instructor = models.ForeignKey(User, related_name='theHiveInstructor', on_delete=CASCADE)
+    course = models.ForeignKey(Course, related_name='theCourse', on_delete=CASCADE)
+    active_hive = models.BooleanField(default=1)
 
 class Assigned_Hive(models.Model):
-    hive = models.ForeignKey()
-    student = models.ForeignKey()
+    hive = models.ForeignKey(Hive, related_name='theHive', on_delete=CASCADE)
+    bee = models.ForeignKey(User, related_name='theBee', on_delete=CASCADE)
+
+class Reading(models.Model):
+    title = models.CharField(max_length=255, blank=True, null=True)
+    course_reading = models.ForeignKey(Course, related_name='theCourseReading', on_delete=CASCADE)
+    active_reading = models.BooleanField(default=1)
+
+class Assignment(models.Model):
+    title = models.CharField(max_length=255, blank=True, null=True)
+    course_assignment = models.ForeignKey(Course, related_name='theCourseAssignment', on_delete=CASCADE)
+    active_assignment = models.BooleanField(default=1)
 
 class Progress(models.Model):
-    hive = models.ForeignKey()
-    student = models.ForeignKey()
-    reading = models.ForeignKey()
-    assignment = models.ForeignKey()
+    current_hive = models.ForeignKey(Hive, related_name='theCurrentHive', on_delete=CASCADE)
+    hive_bee = models.ForeignKey(User, related_name='theHiveBee', on_delete=CASCADE)
+    reading = models.ForeignKey(Reading, related_name='theReading', on_delete=CASCADE)
+    assignment = models.ForeignKey(Assignment, related_name='theAssignment', on_delete=CASCADE)
     complete_date = models.DateField()
-    pass
 
 class History(models.Model):
-    hive = models.ForeignKey()
-    instructor = models.ForeignKey()
+    hive_taught = models.ForeignKey(Hive, related_name='thePastHives', on_delete=CASCADE)
+    instructor = models.ForeignKey(User, related_name='theInstructor', on_delete=CASCADE)
     taught = models.DateField()
     student_count = models.IntegerField()
     pass_rate = models.IntegerField()
     drop_rate = models.IntegerField()
-    pass
-
-class Reading(models.Model):
-    title = models.CharField(max_length=255, blank=True, null=True)
-    course = models.ForeignKey()
-    pass
-
-class Assignment(models.Model):
-    title = models.CharField(max_length=255, blank=True, null=True)
-    course = models.ForeignKey()
-    pass
 
 class Attendance(models.Model):
-    hive = models.ForeignKey()
-    student = models.ForeignKey()
-    marked_by = models.ForeignKey()
-    attended = models.BooleanField()
-    pass
+    hive_attendance = models.ForeignKey(Hive, related_name='theHiveAttendance', on_delete=CASCADE)
+    bee_attendance = models.ForeignKey(User, related_name='theBeeAttendance', on_delete=CASCADE)
+    marked_by = models.ForeignKey(User, related_name='theMarkingInstructor', on_delete=CASCADE)
+    attended = models.BooleanField(default=0)
