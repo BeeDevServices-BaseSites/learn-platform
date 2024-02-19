@@ -39,6 +39,7 @@ class User(models.Model):
     email = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
     level = models.IntegerField(default=0)
+    active_account = models.BooleanField(default=1)
 
     objects = UserManager()
 
@@ -75,8 +76,74 @@ def create_user_profile(sender, instance, created, **kwargs):
         post_save.connect(create_user_profile, sender=User)
 
 class Student(models.Model):
-    pass
+    address01 = models.CharField(max_length=255, blank=True, null=True)
+    address02 = models.CharField(max_length=255, blank=True, null=True)
+    city = models.CharField(max_length=255, blank=True, null=True)
+    state = models.CharField(max_length=255, blank=True, null=True)
+    zip_code = models.CharField(max_length=255, blank=True, null=True)
+    phone = models.CharField(max_length=255, blank=True, null=True)
+    enroll_date = models.DateField(max_length=255, blank=True, null=True)
+    graduation_date = models.DateField(blank=True, null=True)
+    disenroll_date = models.DateField(blank=True, null=True)
+    disenroll_reason = models.CharField(max_length=255, blank=True, null=True)
+    student = models.ForeignKey(User, related_name='theStudent', on_delete=CASCADE)
 
 class Staff(models.Model):
+    address01 = models.CharField(max_length=255, blank=True, null=True)
+    address02 = models.CharField(max_length=255, blank=True, null=True)
+    city = models.CharField(max_length=255, blank=True, null=True)
+    state = models.CharField(max_length=255, blank=True, null=True)
+    zip_code = models.CharField(max_length=255, blank=True, null=True)
+    phone = models.CharField(max_length=255, blank=True, null=True)
+    hire_date = models.DateField(blank=True, null=True)
+    pay_rate = models.DateField(blank=True, null=True)
+    supervisor = models.ForeignKey(User, related_name='theSupervisor', on_delete=CASCADE)
+    staff = models.ForeignKey(User, related_name='theStaff', on_delete=CASCADE)
+
+class Course(models.Model):
+    title = models.CharField(max_length=255, blank=True, null=True)
+    course_length = models.CharField(max_length=255, blank=True, null=True)
+    course_info = models.CharField(max_length=255, blank=True, null=True)
+
+class Hive(models.Model):
+    hive_name = models.CharField(max_length=255, blank=True, null=True)
+    instructor = models.ForeignKey(User, related_name='theInstructor', on_delete=CASCADE)
     pass
 
+class Assigned_Hive(models.Model):
+    hive = models.ForeignKey()
+    student = models.ForeignKey()
+
+class Progress(models.Model):
+    hive = models.ForeignKey()
+    student = models.ForeignKey()
+    reading = models.ForeignKey()
+    assignment = models.ForeignKey()
+    complete_date = models.DateField()
+    pass
+
+class History(models.Model):
+    hive = models.ForeignKey()
+    instructor = models.ForeignKey()
+    taught = models.DateField()
+    student_count = models.IntegerField()
+    pass_rate = models.IntegerField()
+    drop_rate = models.IntegerField()
+    pass
+
+class Reading(models.Model):
+    title = models.CharField(max_length=255, blank=True, null=True)
+    course = models.ForeignKey()
+    pass
+
+class Assignment(models.Model):
+    title = models.CharField(max_length=255, blank=True, null=True)
+    course = models.ForeignKey()
+    pass
+
+class Attendance(models.Model):
+    hive = models.ForeignKey()
+    student = models.ForeignKey()
+    marked_by = models.ForeignKey()
+    attended = models.BooleanField()
+    pass
