@@ -81,6 +81,11 @@ def create_user_profile(sender, instance, created, **kwargs):
         User.objects.create(user=instance)
         post_save.connect(create_user_profile, sender=User)
 
+class Department(models.Model):
+    name = models.CharField(max_length=255, blank=True, null=True)
+    information = models.TextField()
+    supervisor = models.ForeignKey(User, related_name='theSuper', on_delete=CASCADE)
+
 class Student(models.Model):
     enroll_date = models.DateField(max_length=255, blank=True, null=True)
     graduation_date = models.DateField(blank=True, null=True)
@@ -93,11 +98,6 @@ class Staff(models.Model):
     pay_rate = models.DateField(blank=True, null=True)
     department = models.ForeignKey(Department, related_name='theDepartment', on_delete=CASCADE)
     staff = models.ForeignKey(User, related_name='theStaff', on_delete=CASCADE)
-
-class Department(models.Model):
-    name = models.CharField(max_length=255, blank=True, null=True)
-    information = models.TextField()
-    supervisor = models.ForeignKey(User, related_name='theSuper', on_delete=CASCADE)
 
 class Course(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
