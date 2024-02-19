@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    {% block nav %}
+        <a href="javascript:void(0);" class="icon" onclick="menu()">
+            <i class="fa fa-bars"></i>
+        </a>
+        <nav id="myLinks">
+            <a href="/">Home</a>
+
+            {% if student  %}
+                <!-- <a href="/client/dash/">Client Dashboard</a> -->
+                <!-- <a href="/logout/">Logout</a> -->
+            {% elif employee %}
+                <!-- <a href="/company/dash/">Employee Dashboard</a> -->
+                <!-- <a href="/logout/">Logout</a> -->
+            {% else %}
+                <!-- <a href="/client/">Client Portal</a> -->
+                <!-- <a href="/company/">Employee Portal</a> -->
+            {% endif %}
+        </nav>
+    {% endblock nav %}
+</html>
