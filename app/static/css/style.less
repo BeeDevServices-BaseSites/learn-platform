@@ -1,0 +1,43 @@
+@import './base/base.less';
+
+
+
+body {
+    background-color: @white;
+    .flexcolumn();
+    width: 100%;
+
+    header {
+        .flexrow();
+        background: @dark_yellow;
+        background: @header_gradient;
+        border-bottom: @green 5px solid;
+        width: 99%;
+    }
+    main {
+        .flexcolumn();
+        width: 99%;
+        background-image: url('https://images.craftsnherbs.com/backgrounds/hex.png');
+    }
+    footer {
+        .flexrow();
+        background: @dark_yellow;
+        background: @header_gradient;
+        border-top: @green 5px solid;
+        width: 99%;
+
+        .row {
+            .flexrow();
+            width: 99%;
+
+            .row {
+                .flexrow();
+                width: 99%;
+                
+                img {
+                    max-width: 50px;
+                }
+            }
+        }
+    }
+}

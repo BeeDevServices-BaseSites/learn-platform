@@ -1,0 +1,65 @@
+.flexrow {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.flexcolumn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+body {
+  background-color: #CBE5EC;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+body header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: #efd780;
+  background: linear-gradient(0deg, #efd780 42%, #f6e8b6 79%);
+  border-bottom: #18AC58 5px solid;
+  width: 99%;
+}
+body main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 99%;
+  background-image: url('https://images.craftsnherbs.com/backgrounds/hex.png');
+}
+body footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: #efd780;
+  background: linear-gradient(0deg, #efd780 42%, #f6e8b6 79%);
+  border-top: #18AC58 5px solid;
+  width: 99%;
+}
+body footer .row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 99%;
+}
+body footer .row .row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 99%;
+}
+body footer .row .row img {
+  max-width: 50px;
+}
