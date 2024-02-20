@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    {% block flash %}
+        <div>
+            {% if employee %}
+                <span class="session">{{employee.first_name}}</span>
+            {% elif student %}
+                <span class="session">{{student.first_name}}</span>
+            {% else %}
+                <span class="session">Guest</span>
+            {% endif %}
+            {% if messages %}
+            <section class='messages'>
+                {% for message in messages %}
+                <h3 {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h3>
+                {% endfor %}
+            </section>
+            {% endif %}
+        </div>
+    {% endblock flash %}
+</html>

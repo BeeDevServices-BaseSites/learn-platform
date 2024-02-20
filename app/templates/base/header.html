@@ -1,0 +1,15 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    {% block header %}
+        <header>
+            <div class="row">
+                <img src="" alt="Logo">
+                <nav>
+                    {% block nav %} {% include 'base/nav.html'  %} {% endblock nav %}
+                </nav>
+            </div>
+            <h1>TechByte Learning</h1>
+        </header>
+    {% endblock header %}
+</html>

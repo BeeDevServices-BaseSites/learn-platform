@@ -59,7 +59,8 @@ roleTypes = [
     ('Alumni', 'Graduated Student'),
     ('Intern', 'Internship'),
     ('Instructor', 'Instructor'),
-    ('TA', 'Teachers Assistant')
+    ('TA', 'Teachers Assistant'),
+    ('Tutee', 'Tutoring Client')
 ]
 
 class Profile(models.Model):
@@ -81,6 +82,11 @@ def create_user_profile(sender, instance, created, **kwargs):
         User.objects.create(user=instance)
         post_save.connect(create_user_profile, sender=User)
 
+class Department(models.Model):
+    name = models.CharField(max_length=255, blank=True, null=True)
+    information = models.TextField()
+    supervisor = models.ForeignKey(User, related_name='theSuper', on_delete=CASCADE)
+
 class Student(models.Model):
     enroll_date = models.DateField(max_length=255, blank=True, null=True)
     graduation_date = models.DateField(blank=True, null=True)
@@ -88,22 +94,41 @@ class Student(models.Model):
     disenroll_reason = models.CharField(max_length=255, blank=True, null=True)
     student = models.ForeignKey(User, related_name='theStudent', on_delete=CASCADE)
 
+class Tutee(models.Model):
+    tutor_credits_purchased = models.IntegerField()
+    tutor_credits_remaining = models.IntegerField()
+    purchase_date = models.DateField()
+    expire_date = models.DateField()
+    tutee = models.ForeignKey(User, related_name='theTutee', on_delete=CASCADE)
+
 class Staff(models.Model):
     hire_date = models.DateField(blank=True, null=True)
     pay_rate = models.DateField(blank=True, null=True)
     department = models.ForeignKey(Department, related_name='theDepartment', on_delete=CASCADE)
     staff = models.ForeignKey(User, related_name='theStaff', on_delete=CASCADE)
 
-class Department(models.Model):
-    name = models.CharField(max_length=255, blank=True, null=True)
-    information = models.TextField()
-    supervisor = models.ForeignKey(User, related_name='theSuper', on_delete=CASCADE)
+class Tuition(models.Model):
+    invoiced = models.DateField(blank=True, null=True)
+    financed = models.DateField(blank=True, null=True)
+    finance_reported = models.DateField(blank=True, null=True)
+    paid = models.DateField(blank=True, null=True)
+    updated_role = models.BooleanField(default=0)
+    payer = models.ForeignKey(User, related_name='thePayer', on_delete=CASCADE)
 
 class Course(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
     course_length = models.CharField(max_length=255, blank=True, null=True)
     course_info = models.CharField(max_length=255, blank=True, null=True)
     active_course = models.BooleanField(default=1)
+
+class Tutoring(models.Model):
+    credits_required = models.IntegerField()
+    session_length = models.CharField(max_length=255, blank=True, null=True)
+    tutoree = models.ForeignKey(User, related_name='theTutoree', on_delete=CASCADE)
+    tutor = models.ForeignKey(User, related_name='theTutor', on_delete=CASCADE)
+    session_date = models.DateTimeField()
+    scheduled_session = models.BooleanField(default=0)
+    completed_session = models.BooleanField(default=0)
 
 class Hive(models.Model):
     hive_name = models.CharField(max_length=255, blank=True, null=True)
