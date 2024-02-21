@@ -12,6 +12,8 @@ def index(request):
         'title': 'Home',
         'header': 'TechByte Learning',
     }
+    if 'user_id' not in request.session:
+        user = False
     context = {
         'title': title,
     }
