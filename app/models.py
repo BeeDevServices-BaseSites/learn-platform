@@ -94,7 +94,7 @@ class Student(models.Model):
     disenroll_reason = models.CharField(max_length=255, blank=True, null=True)
     student = models.ForeignKey(User, related_name='theStudent', on_delete=CASCADE)
 
-class Tutee(models.Model):
+class Tutor(models.Model):
     tutor_credits_purchased = models.IntegerField()
     tutor_credits_remaining = models.IntegerField()
     purchase_date = models.DateField()
