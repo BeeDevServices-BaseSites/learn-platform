@@ -9,10 +9,12 @@ from django.contrib import messages
 
 def index(request):
     title = {
-    'title': 'TechByte',
-    'header': 'BeeDev Services',
-}
-    context = {
-        'title': title
+        'title': 'Home',
+        'header': 'TechByte Learning',
     }
-    return render(request, 'template.html', context)
+    if 'user_id' not in request.session:
+        user = False
+    context = {
+        'title': title,
+    }
+    return render(request, 'index.html', context)
