@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'app.apps.AppConfig',
     'corsheaders',
     'api.apps.ApiConfig',
+    'course.apps.CourseConfig',
     'rest_framework',
 ]
 
