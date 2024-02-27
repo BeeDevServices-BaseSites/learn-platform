@@ -99,7 +99,7 @@ class Tutor(models.Model):
     tutor_credits_remaining = models.IntegerField()
     purchase_date = models.DateField()
     expire_date = models.DateField()
-    tutor = models.ForeignKey(User, related_name='theTutor', on_delete=CASCADE)
+    tutee = models.ForeignKey(User, related_name='theTutee', on_delete=CASCADE)
 
 class Staff(models.Model):
     hire_date = models.DateField(blank=True, null=True)
