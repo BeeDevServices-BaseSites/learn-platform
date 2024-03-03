@@ -34,11 +34,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app.apps.AppConfig',
+    'coreApp.apps.CoreappConfig',
     'corsheaders',
     'api.apps.ApiConfig',
-    'course.apps.CourseConfig',
+    'courseApp.apps.CourseappConfig',
     'rest_framework',
+    'financeApp.apps.FinanceappConfig',
 ]
 
 MIDDLEWARE = [
@@ -74,26 +75,26 @@ WSGI_APPLICATION = 'techbyteLearn.wsgi.application'
 
 
 # Database
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR,'db.sqlite3'),
-    }
-}
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'mysql.connector.django',
-#         # 'ENGINE':'django.db.backends.mysql',
-#         'NAME': 'thehives_learntechbyte',
-#         'USER': 'root',
-#         # 'USER': 'thehives_techbyte',
-#         'PASSWORD': 'HoneyBee#4',
-#         # 'PASSWORD': 'QueenBeesCrew',
-#         'HOST': 'localhost',
-#         'PORT': '3306',
-#         # 'OPTIONS': {'charset': 'utf8mb4'},
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR,'db.sqlite3'),
 #     }
 # }
+DATABASES = {
+    'default': {
+        # 'ENGINE': 'mysql.connector.django',
+        'ENGINE':'django.db.backends.mysql',
+        'NAME': 'thehives_techbyte_learn',
+        'USER': 'root',
+        # 'USER': 'thehives_techbyte',
+        'PASSWORD': 'HoneyBee#4',
+        # 'PASSWORD': 'QueenBeesCrew',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        # 'OPTIONS': {'charset': 'utf8mb4'},
+    }
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
