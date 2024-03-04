@@ -6,7 +6,8 @@
     {% block header %} {% include 'base/header.html' %} {% endblock header %}
     {% block flash %} {% include 'base/flash.html' %} {% endblock flash %}
     <main>
-        
+        <h1>{{ markdown_content.title }}</h1>
+        <p>{{ markdown_content.content| safe }}</p>
     </main>
     {% block footer %} {% include 'base/footer.html'  %} {% endblock %}
 </body>

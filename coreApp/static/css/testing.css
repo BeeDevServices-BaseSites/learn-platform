@@ -1,0 +1,88 @@
+:root {
+    /* Easing functions: https://easings.net
+      Ease in out circle: cubic-bezier(0.785, 0.135, 0.15, 0.86) 
+      Ease in out cubic: cubic-bezier(0.645, 0.045, 0.355, 1)
+    */
+    
+    /* The easing function used by the logo div */
+    --logo-ease: cubic-bezier(0.645, 0.045, 0.355, 1);
+    
+    /* The easing function used by the hexes */
+    --hex-ease: cubic-bezier(0.645, 0.045, 0.355, 1);
+    
+    /* Scaling of the hexes during animation */
+    --hex-scaling: 0.6;
+  
+    /* Scaling of the logo during animation */
+    --logo-scaling: 0.9;
+    
+    /* Length of one animation */  
+    --loop-time: 6s;
+    
+    /* Text (hex) shadow */
+    --hex-shadow: #444 0.01em 0 0.1em;
+  }
+  
+  body{
+    font-size: 10em;
+  }
+  
+  .haive-spinner {
+    position: relative;
+    width: 2.5em;
+    height: 1.5em;
+    font-size: 2em;
+  /*  background-color: silver;*/
+    animation: spinLogo var(--loop-time) var(--logo-ease) infinite;
+  }
+  
+  .heaven {
+    color: #F8B500;
+    margin-left: 1em;
+    margin-top: -0.25em;
+  }
+  
+  .honey {
+    color: #F8B500;  
+    /* margin-left: 1.31em;  /* match = 1.31em*/
+    /* margin-top: 0.3125em; /* match = 0.3125em*/
+    margin-left: 1.316em;  
+    margin-top: 0.32em; 
+  }
+  
+  .hive {
+    color: #F8B500;
+    margin-left: 0.685em; /* match= 0.69em*/
+    margin-top: 0.32em; /* match= 0.3125em*/
+  }
+  
+  .hexagon {
+    position: absolute;
+    animation: spinHex var(--loop-time) var(--hex-ease) infinite;
+    text-shadow: var(--hex-shadow);
+  }
+  
+  .hexagon:after {
+    content: "⬢";
+  }
+  
+  @-webkit-keyframes spinLogo {
+    0% {   transform: rotate(0deg) scale(1);}
+    16.67% {  transform: rotate(60deg) scale(var(--logo-scaling));}
+    33.33% {  transform: rotate(120deg) scale(1);}
+    50% {  transform: rotate(180deg) scale(var(--logo-scaling));}
+    66.67% {  transform: rotate(240deg) scale(1);}
+    83.33% {  transform: rotate(300deg) scale(var(--logo-scaling));}
+    100% {  transform: rotate(360deg) scale(1);}
+  }
+  
+  @-webkit-keyframes spinHex {
+    0% {   transform: rotate(60deg) scale(var(--flex-scaling));}
+    16.67% {  transform: rotate(60deg) scale(1);}
+    33.33% {  transform: rotate(60deg) scale(var(--flex-scaling));}
+    50% {  transform: rotate(60deg) scale(1);}
+    66.67% {  transform: rotate(60deg) scale(var(--flex-scaling));}
+    83.33% {  transform: rotate(60deg) scale(1);}
+    100% {  transform: rotate(60deg) scale(var(--flex-scaling));}
+  }
+  
