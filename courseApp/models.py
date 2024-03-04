@@ -9,6 +9,10 @@ class Instructor(models.Model):
     level = models.CharField(max_length=255, blank=True, null=True)
     instructor = models.ForeignKey(Staff, related_name="theInstructor", on_delete=CASCADE)
 
+class TeachersAssistant(models.Model):
+    level = models.CharField(max_length=255, blank=True, null=True)
+    ta = models.ForeignKey(Staff, related_name="theTa", on_delete=CASCADE)
+
 # Level = Drone Bee
 class Bee(models.Model):
     level = models.CharField(max_length=255, blank=True, null=True)
@@ -16,7 +20,7 @@ class Bee(models.Model):
 
 # Tutoring match
 class TutorMatch(models.Model):
-    tutor = models.ForeignKey(Instructor, related_name="theTutor", on_delete=CASCADE)
+    tutor = models.ForeignKey(Staff, related_name="theTutor", on_delete=CASCADE)
     tutoree = models.ForeignKey(Tutee, related_name="theTutoree", on_delete=CASCADE)
 
 # Tutoring in general
@@ -28,14 +32,21 @@ class Tutoring(models.Model):
     session_date = models.DateTimeField()
     scheduled_session = models.BooleanField(default=0)
     completed_session = models.BooleanField(default=0)
+    notes = models.TextField(blank=True, null=True)
 
+rootPrograms = [
+    ('0', 'Pre Requisites Courses'),
+    ('1', 'Software Development'),
+    ('2', 'Game Development')
+]
 
 # Over all course ie Intro to programming
 class Course(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
     course_length = models.CharField(max_length=255, blank=True, null=True)
-    course_info = models.CharField(max_length=255, blank=True, null=True)
+    course_info = models.TextField(blank=True, null=True)
     active_course = models.BooleanField(default=1)
+    root_Program = models.CharField(max_length=255, choices=rootPrograms, default=0)
 
 class CourseRepo(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
@@ -64,7 +75,6 @@ class AssignmentRepo(models.Model):
     url = models.TextField()
     version = models.CharField(max_length=255, blank=True, null=True)
     homework = models.ForeignKey(Assignment, related_name='theHomework', on_delete=CASCADE)
-
 
 # Actual class who is teaching name of class ie june24IntroProgramming active while being taught inactive when done
     # API for stats
