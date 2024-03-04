@@ -21,6 +21,18 @@ def index(request):
     }
     return render(request, 'index.html', context)
 
+def login_page(request):
+    title = {
+        'title': 'Dashboard',
+        'header': 'TechByte Learning',
+    }
+    if 'user_id' not in request.session:
+        user = False
+    context = {
+        'title': title,
+    }
+    return render(request, 'login.html', context)
+
 def login(request):
     user = User.objects.filter(email=request.POST['email'])
     if user:

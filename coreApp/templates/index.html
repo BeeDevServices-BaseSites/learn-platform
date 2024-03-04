@@ -6,7 +6,7 @@
     {% block header %} {% include 'base/header.html' %} {% endblock header %}
     {% block flash %} {% include 'base/flash.html' %} {% endblock flash %}
     <main>
-        <form action='/login/' method='post' id="login">
+        <!-- <form action='/login/' method='post' id="login">
             {% csrf_token %}
             <section>
                 <label for='email'>Email</label>
@@ -17,7 +17,7 @@
                 <input name='password' type='password'>
             </section>
             <button>Sign In</button>
-        </form>
+        </form> -->
     </main>
     {% block footer %} {% include 'base/footer.html'  %} {% endblock %}
 </body>
