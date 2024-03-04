@@ -6,7 +6,10 @@ from django.conf.urls.static import static
 urlpatterns = [
     # Base Route
     path('', views.index),
-    path('dashboard/', views.test),
+    path('login/', views.login),
+    path('dashboard/', views.dashboard),
+    path('queen/bees/admin-register/', views.admin_register),
+    path('register/', views.register),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
