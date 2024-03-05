@@ -35,20 +35,20 @@ class UserManager(models.Manager):
 # All users regardless of student or staff
     # API needed for stats to include profile roles
 
-    # Levels = 0 never logged in | 1 = general user | 
+    # Levels = 0 never logged in | 1 = logged in | 24 = superadmin
 class User(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
-    level = models.IntegerField(default=0)
-    active_account = models.BooleanField(default=1)
+    is_active = models.BooleanField(default=1)
+    is_default_pass =  models.BooleanField(default=0)
 
     objects = UserManager()
 
-    loggedOn = models.DateTimeField(auto_now=True)
-    createdAt = models.DateTimeField(auto_now_add=True)
-    updatedAt = models.DateTimeField(auto_now=True)
+    logged_on = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'{self.firstName} {self.lastName}'
@@ -56,22 +56,11 @@ class User(models.Model):
     def fullName(self):
         return f'{self.firstName} {self.lastName}'
 
-roleTypes = [
-    ('Student', 'Current Student account'),
-    ('Upcoming-Student', 'Enrolled but waiting for class start'),
-    ('Alumni', 'Graduated Student'),
-    ('Intern', 'Internship'),
-    ('SuperAdmin', '1st User'),
-    ('Admissions', 'Admissions Team'),
-    ('Admin', 'General Admin'),
-    ('Instructor', 'Instructor'),
-    ('TA', 'Teachers Assistant'),
-    ('Tutee', 'Tutoring Client')
-]
-# All users regardless of student or staff but distinguished by role
+# All users regardless of learner or staff
 class Profile(models.Model):
     user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
-    role = models.CharField(max_length=255, choices=roleTypes, default='Student')
+    # 0 = not staff | 1 = staff
+    is_staff = models.BooleanField(default=0)
     image = models.ImageField(upload_to='profileImgs', default='bee.jpg')
     address01 = models.CharField(max_length=255, blank=True, null=True)
     address02 = models.CharField(max_length=255, blank=True, null=True)
@@ -87,3 +76,38 @@ def create_user_profile(sender, instance, created, **kwargs):
     if created:
         User.objects.create(user=instance)
         post_save.connect(create_user_profile, sender=User)
+
+# if is_staff == 1 
+        
+staff_roles = [
+    ('0', 'Developer'),
+    ('1', 'Instructor'),
+    ('2', 'TA'),
+    ('3', 'Tutor'),
+    ('4', 'Supervisor'),
+    ('5', 'Management'),
+    ('6', 'Team Lead'),
+]
+
+class Staff(models.Model):
+    hire_date = models.DateField(blank=True, null=True)
+    in_active_date = models.DateField(blank=True, null=True)
+    staff = models.ForeignKey(User, related_name='theStaff', on_delete=CASCADE)
+
+class StaffRole(models.Model):
+    role = models.CharField(max_length=255, choices=staff_roles, default=0)
+    job = models.ForeignKey(Staff, related_name='theStaffJob', on_delete=CASCADE)
+
+class Department(models.Model):
+    name = models.CharField(max_length=255, blank=True, null=True)
+    information = models.TextField()
+    supervisor = models.ForeignKey(Staff, related_name='theSuper', on_delete=CASCADE)
+
+class DepartmentStaff(models.Model):
+    worker = models.ForeignKey(Staff, related_name='theWorker', on_delete=CASCADE)
+    workstation = models.ForeignKey(Department, related_name='theWorkStation', on_delete=CASCADE)
+
+# if is_staff == 0
+    
+class Learner(models.Model):
+    pass
