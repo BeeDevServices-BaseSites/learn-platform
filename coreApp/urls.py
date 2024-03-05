@@ -9,7 +9,7 @@ urlpatterns = [
     path('login/', views.login),
     path('dashboard/', views.dashboard),
     path('queen/bees/admin-register/', views.admin_register),
-    path('register/', views.register),
+    path('registration/', views.register),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

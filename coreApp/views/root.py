@@ -2,7 +2,13 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from coreApp.models import *
 import bcrypt
+from environ import Env
 
+env = Env()
+env.read_env()
+
+REG_CODE = env('REG_CODE')
+print(REG_CODE)
 
 # title = {
 #     'title': '',
@@ -16,6 +22,9 @@ def index(request):
     }
     if 'user_id' not in request.session:
         user = False
+    allUsers = User.objects.all().values()
+    if not allUsers:
+        return redirect('/queen/bees/admin-register/')
     context = {
         'title': title,
     }
@@ -39,6 +48,10 @@ def login(request):
 
 def register(request):
     if request.method == 'GET':
+        return redirect('/queen/bees/admin-register/')
+    theCode = request.POST['reg_code']
+    if theCode != REG_CODE:
+        messages.error(request, 'Invalid Registration Code')
         return redirect('/queen/bees/admin-register/')
     errors = User.objects.validate(request.POST)
     if errors:
@@ -82,4 +95,4 @@ def admin_register(request):
     context = {
         'title': title,
     }
-    return render(request, 'index.html', context)
+    return render(request, 'registration.html', context)

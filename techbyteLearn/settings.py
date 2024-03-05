@@ -7,7 +7,7 @@ env.read_env()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = 'KEY'
+SECRET_KEY = env('KEY')
 
 DEBUG = True
 # DEBUG = False
@@ -83,12 +83,12 @@ WSGI_APPLICATION = 'techbyteLearn.wsgi.application'
 # }
 DATABASES = {
     'default': {
-        'ENGINE': 'mysql.connector.django',
-        # 'ENGINE':'django.db.backends.mysql',
-        'NAME': 'thehives_techbyte_learn',
-        'USER': 'root',
+        # 'ENGINE': 'mysql.connector.django',
+        'ENGINE':'django.db.backends.mysql',
+        'NAME': env('DATABASE_NAME'),
+        'USER': env('DATABASE_USER'),
         # 'USER': 'thehives_techbyte',
-        'PASSWORD': 'HoneyBee#4',
+        'PASSWORD': env('DATABASE_PASSWORD'),
         # 'PASSWORD': 'QueenBeesCrew',
         'HOST': 'localhost',
         'PORT': '3306',
@@ -135,5 +135,5 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 # EMAIL_PORT = 465
 EMAIL_HOST_USER = 'beedev.services@gmail.com'
-EMAIL_HOST_PASSWORD = 'HOST_PASSWORD'
+EMAIL_HOST_PASSWORD = env('HOST_PASSWORD')
 # EMAIL_HOST_ALT_USER = 'melissa@techbyte-learning.com'
