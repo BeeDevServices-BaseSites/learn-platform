@@ -71,7 +71,7 @@ roleTypes = [
 # All users regardless of student or staff but distinguished by role
 class Profile(models.Model):
     user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
-    role = models.BooleanField(default='Student')
+    role = models.CharField(max_length=255, choices=roleTypes, default='Student')
     image = models.ImageField(upload_to='profileImgs', default='bee.jpg')
     address01 = models.CharField(max_length=255, blank=True, null=True)
     address02 = models.CharField(max_length=255, blank=True, null=True)
