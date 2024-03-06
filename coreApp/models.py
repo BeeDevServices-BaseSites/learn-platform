@@ -91,7 +91,7 @@ staff_roles = [
 
 class Staff(models.Model):
     hire_date = models.DateField(blank=True, null=True)
-    in_active_date = models.DateField(blank=True, null=True)
+    inactive_date = models.DateField(blank=True, null=True)
     staff = models.ForeignKey(User, related_name='theStaff', on_delete=CASCADE)
 
 class StaffRole(models.Model):
@@ -100,7 +100,6 @@ class StaffRole(models.Model):
 
 class Department(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
-    information = models.TextField()
     supervisor = models.ForeignKey(Staff, related_name='theSuper', on_delete=CASCADE)
 
 class DepartmentStaff(models.Model):
@@ -109,5 +108,18 @@ class DepartmentStaff(models.Model):
 
 # if is_staff == 0
     
+learner_roles = [
+    ('0', 'Student'),
+    ('1', 'Tutee'),
+    ('2', 'Alumni'),
+    ('3', 'Intern'),
+]
+    
 class Learner(models.Model):
-    pass
+    contact_date = models.DateField(blank=True, null=True)
+    intake_staff = models.ForeignKey(Staff, related_name='theIntakeStaff', on_delete=CASCADE)
+    learner = models.ForeignKey(User, related_name='theLearner', on_delete=CASCADE)
+
+class LearnerRoles(models.Model):
+    role = models.CharField(max_length=255, choices=learner_roles, default=0)
+    learner_type = models.ForeignKey(Learner, related_name='theLearnerType', on_delete=CASCADE)

@@ -3,6 +3,8 @@ from django.db.models.deletion import CASCADE
 from coreApp.models import *
 from financeApp.models import *
 
+class Skill(models.Model):
+    skill = models.CharField(max_length=255, blank=True, null=True)
 
 # Level = SR instructor 
 class Instructor(models.Model):
@@ -13,15 +15,28 @@ class TeachersAssistant(models.Model):
     level = models.CharField(max_length=255, blank=True, null=True)
     ta = models.ForeignKey(Staff, related_name="theTa", on_delete=CASCADE)
 
+class InstructorCert(models.Model):
+    cert_date = models.DateField(blank=True, null=True)
+    instructor_cert = models.ForeignKey(Skill, related_name="theInstructorSkill", on_delete=CASCADE)
+    skilled_instructor = models.ForeignKey(Instructor, related_name="theSkilledInstructor", on_delete=CASCADE)
+
+class TACert(models.Model):
+    cert_date = models.DateField(blank=True, null=True)
+    ta_cert = models.ForeignKey(Skill, related_name="theTASkill", on_delete=CASCADE)
+    skilled_ta = models.ForeignKey(Instructor, related_name="theSkilledTA", on_delete=CASCADE)
+
+class BeeType(models.Model):
+    title = models.CharField(max_length=255, blank=True, null=True)
+
 # Level = Drone Bee
 class Bee(models.Model):
-    level = models.CharField(max_length=255, blank=True, null=True)
-    bee = models.ForeignKey(Student, related_name="theBee", on_delete=CASCADE)
+    level = models.ForeignKey(BeeType, related_name="theBeeType", on_delete=CASCADE)
+    bee = models.ForeignKey(Learner, related_name="theBee", on_delete=CASCADE)
 
 # Tutoring match
 class TutorMatch(models.Model):
     tutor = models.ForeignKey(Staff, related_name="theTutor", on_delete=CASCADE)
-    tutoree = models.ForeignKey(Tutee, related_name="theTutoree", on_delete=CASCADE)
+    tutee = models.ForeignKey(Bee, related_name="theTutee", on_delete=CASCADE)
 
 # Tutoring in general
     # API for stats
@@ -30,66 +45,66 @@ class Tutoring(models.Model):
     session_length = models.CharField(max_length=255, blank=True, null=True)
     pair = models.ForeignKey(TutorMatch, related_name='thePair', on_delete=CASCADE)
     session_date = models.DateTimeField()
-    scheduled_session = models.BooleanField(default=0)
-    completed_session = models.BooleanField(default=0)
+    is_scheduled = models.BooleanField(default=0)
+    is_completed = models.BooleanField(default=0)
     notes = models.TextField(blank=True, null=True)
 
-rootPrograms = [
-    ('0', 'Pre Requisites Courses'),
-    ('1', 'Software Development'),
-    ('2', 'Game Development')
+repo_type = [
+    ('0', 'Reading'),
+    ('1', 'Assignment')
 ]
+
+class RepoUrl(models.Model):
+    title = models.CharField(max_length=255, blank=True, null=True)
+    version = models.CharField(max_length=255, blank=True, null=True)
+    url = models.CharField(max_length=255, blank=True, null=True)
+    repo_purpose = models.CharField(max_length=255, choices=repo_type, default=1)
+
 
 # Over all course ie Intro to programming
 class Course(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
     course_length = models.CharField(max_length=255, blank=True, null=True)
     course_info = models.TextField(blank=True, null=True)
-    active_course = models.BooleanField(default=1)
-    root_Program = models.CharField(max_length=255, choices=rootPrograms, default=0)
+    is_active = models.BooleanField(default=1)
+    root_Program = models.CharField(max_length=255, choices=program_types, default=0)
 
-class CourseRepo(models.Model):
-    title = models.CharField(max_length=255, blank=True, null=True)
-    url = models.TextField()
-    version = models.CharField(max_length=255, blank=True, null=True)
-    subject = models.ForeignKey(Course, related_name='theSubject', on_delete=CASCADE)
 
 # Course content to include a page with a link to assignment (assignment link must open in new tab)
 class Reading(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
     course_reading = models.ForeignKey(Course, related_name='theCourseReading', on_delete=CASCADE)
     page_number = models.IntegerField(default=1)
-    url = models.CharField(max_length=255, blank=True, null=True)
+    reading_url = models.ForeignKey(RepoUrl, related_name='theReadingURL', on_delete=CASCADE)
+    is_active = models.BooleanField(default=1)
 
 # Assignments level = optional/practice/core
 class Assignment(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
     course_assignment = models.ForeignKey(Course, related_name='theCourseAssignment', on_delete=CASCADE)
+    assignment_url = models.ForeignKey(RepoUrl, related_name='theAssignmentURL', on_delete=CASCADE)
     level = models.CharField(max_length=255, blank=True, null=True)
-    active_assignment = models.BooleanField(default=1)
-    url = models.CharField(max_length=255, blank=True, null=True)
-    assignment_number = models.IntegerField(default=1)
-
-class AssignmentRepo(models.Model):
-    title = models.CharField(max_length=255, blank=True, null=True)
-    url = models.TextField()
-    version = models.CharField(max_length=255, blank=True, null=True)
-    homework = models.ForeignKey(Assignment, related_name='theHomework', on_delete=CASCADE)
+    is_active = models.BooleanField(default=1)
 
 # Actual class who is teaching name of class ie june24IntroProgramming active while being taught inactive when done
     # API for stats
 class Hive(models.Model):
     hive_name = models.CharField(max_length=255, blank=True, null=True)
     hive_instructor = models.ForeignKey(Instructor, related_name='theHiveInstructor', on_delete=CASCADE)
+    hive_ta = models.ForeignKey(TeachersAssistant, related_name='theHiveTA', on_delete=CASCADE, blank=True, null=True)
     course = models.ForeignKey(Course, related_name='theCourse', on_delete=CASCADE)
-    active_hive = models.BooleanField(default=1)
+    is_active = models.BooleanField(default=1)
+    hive_start = models.DateField(blank=True, null=True)
+    hive_end = models.DateField(blank=True, null=True)
 
-
+reading_progress = Reading.objects.all().values()
+assignment_progress = Assignment.objects.all().values()
 
 # Assign students to the hive
 class Assigned_Hive(models.Model):
     hive = models.ForeignKey(Hive, related_name='theHive', on_delete=CASCADE)
     bee = models.ForeignKey(Bee, related_name='theBee', on_delete=CASCADE)
+    
 
 
 
