@@ -23,7 +23,7 @@ class InstructorCert(models.Model):
 class TACert(models.Model):
     cert_date = models.DateField(blank=True, null=True)
     ta_cert = models.ForeignKey(Skill, related_name="theTASkill", on_delete=CASCADE)
-    skilled_ta = models.ForeignKey(Instructor, related_name="theSkilledTA", on_delete=CASCADE)
+    skilled_ta = models.ForeignKey(TeachersAssistant, related_name="theSkilledTA", on_delete=CASCADE)
 
 class BeeType(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
@@ -103,7 +103,7 @@ class Assigned_Hive(models.Model):
     hive = models.ForeignKey(Hive, related_name='theHive', on_delete=CASCADE)
     bee = models.ForeignKey(Bee, related_name='theBee', on_delete=CASCADE)
     last_reading = models.ForeignKey(Reading, related_name='theReading', on_delete=CASCADE, blank=True, null=True)
-    last_assignment = models.ForeignKey(Reading, related_name='theAssignment', on_delete=CASCADE, blank=True, null=True)
+    last_assignment = models.ForeignKey(Assignment, related_name='theAssignment', on_delete=CASCADE, blank=True, null=True)
 
 status_code = [
     ('0', 'Present'),

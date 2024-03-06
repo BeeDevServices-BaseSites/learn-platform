@@ -3,10 +3,8 @@
 <html lang="en">
     {% block flash %}
         <div>
-            {% if employee %}
-                <span class="session">{{employee.first_name}}</span>
-            {% elif student %}
-                <span class="session">{{student.first_name}}</span>
+            {% if user != False %}
+                <span class="session">{{user.first_name}}</span>
             {% else %}
                 <span class="session">Guest</span>
             {% endif %}

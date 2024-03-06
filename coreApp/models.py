@@ -51,10 +51,10 @@ class User(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'{self.firstName} {self.lastName}'
+        return f'{self.first_name} {self.last_name}'
 
     def fullName(self):
-        return f'{self.firstName} {self.lastName}'
+        return f'{self.first_name} {self.last_name}'
 
 # All users regardless of learner or staff
 class Profile(models.Model):
