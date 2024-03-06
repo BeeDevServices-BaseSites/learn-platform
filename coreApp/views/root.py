@@ -25,8 +25,11 @@ def index(request):
     allUsers = User.objects.all().values()
     if not allUsers:
         return redirect('/queen/bees/admin-register/')
+    if 'user_id' in request.session:
+        user = User.objects.get(id=request.session['user_id'])
     context = {
         'title': title,
+        'user': user,
     }
     return render(request, 'index.html', context)
 
@@ -70,7 +73,7 @@ def register(request):
         toUpdate = User.objects.get(id=request.session['user_id'])
         toUpdate.level=24
         toUpdate.save()
-    messages.error(request, f'Welcome {newUser.firstName}')
+    messages.error(request, f'Welcome {newUser.first_name}')
     return redirect('/dashboard')
 
 def dashboard(request):
@@ -96,3 +99,8 @@ def admin_register(request):
         'title': title,
     }
     return render(request, 'registration.html', context)
+
+def logout(request):
+    request.session.clear()
+    messages.error(request, 'You have been logged out')
+    return redirect('/')

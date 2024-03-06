@@ -15,7 +15,7 @@ class UserManager(models.Manager):
         if emailCheck:
             print('found email error')
             errors['email'] = 'Email already in use'
-        if form['password'] != form['confirmPassword']:
+        if form['password'] != form['confirm']:
             print('mis matched password error')
             errors['password'] = 'Passwords do not match'
         return errors
