@@ -97,15 +97,13 @@ class Hive(models.Model):
     hive_start = models.DateField(blank=True, null=True)
     hive_end = models.DateField(blank=True, null=True)
 
-reading_progress = list(Reading.objects.all().values())
-assignment_progress = list(Assignment.objects.all().values())
 
 # Assign students to the hive
 class Assigned_Hive(models.Model):
     hive = models.ForeignKey(Hive, related_name='theHive', on_delete=CASCADE)
     bee = models.ForeignKey(Bee, related_name='theBee', on_delete=CASCADE)
-    last_reading = models.CharField(max_length=255, choices=reading_progress, blank=True, null=True)
-    last_assignment = models.CharField(max_length=255, choices=assignment_progress, blank=True, null=True)
+    last_reading = models.ForeignKey(Reading, related_name='theReading', on_delete=CASCADE, blank=True, null=True)
+    last_assignment = models.ForeignKey(Reading, related_name='theAssignment', on_delete=CASCADE, blank=True, null=True)
 
 status_code = [
     ('0', 'Present'),
