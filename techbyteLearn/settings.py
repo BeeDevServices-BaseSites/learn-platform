@@ -83,8 +83,9 @@ WSGI_APPLICATION = 'techbyteLearn.wsgi.application'
 # }
 DATABASES = {
     'default': {
-        'ENGINE': 'mysql.connector.django',
+        # 'ENGINE': 'mysql.connector.django',
         # 'ENGINE':'django.db.backends.mysql',
+        'ENGINE': env('DATABASE_ENGINE'),
         'NAME': env('DATABASE_NAME'),
         'USER': env('DATABASE_USER'),
         # 'USER': 'thehives_techbyte',

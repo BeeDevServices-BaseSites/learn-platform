@@ -69,3 +69,19 @@ def logout(request):
     request.session.clear()
     messages.error(request, 'You have been logged out')
     return redirect('/')
+
+
+def set_password(request):
+    title = {
+        'title': 'Update Password',
+        'header': 'TechByte Learning',
+    }
+    if 'user_id' not in request.session:
+        user = False
+        return redirect('/')
+    user = User.objects.get(id=request.session['user_id'])
+    context = {
+        'title': title,
+        'user': user,
+    }
+    return render(request, 'setPassword.html', context)
