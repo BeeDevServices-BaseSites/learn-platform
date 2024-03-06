@@ -97,36 +97,24 @@ class Hive(models.Model):
     hive_start = models.DateField(blank=True, null=True)
     hive_end = models.DateField(blank=True, null=True)
 
-reading_progress = Reading.objects.all().values()
-assignment_progress = Assignment.objects.all().values()
+reading_progress = list(Reading.objects.all().values())
+assignment_progress = list(Assignment.objects.all().values())
 
 # Assign students to the hive
 class Assigned_Hive(models.Model):
     hive = models.ForeignKey(Hive, related_name='theHive', on_delete=CASCADE)
     bee = models.ForeignKey(Bee, related_name='theBee', on_delete=CASCADE)
-    
+    last_reading = models.CharField(max_length=255, choices=reading_progress, blank=True, null=True)
+    last_assignment = models.CharField(max_length=255, choices=assignment_progress, blank=True, null=True)
 
-
-
-# Auto generated but clicking next / assignment done checkbox will create a new entry for each page read and assignment done with auto date
-    # Internal to django pages API
-class Progress(models.Model):
-    current_hive = models.ForeignKey(Hive, related_name='theCurrentHive', on_delete=CASCADE)
-    hive_bee = models.ForeignKey(Bee, related_name='theHiveBee', on_delete=CASCADE)
-    reading = models.ForeignKey(Reading, related_name='theReading', on_delete=CASCADE)
-    assignment = models.ForeignKey(Assignment, related_name='theAssignment', on_delete=CASCADE)
-    complete_date = models.DateTimeField(auto_now_add=True)
-
-# History for instructors
-    # Internal to django pages API
-class History(models.Model):
-    hive_taught = models.ForeignKey(Hive, related_name='thePastHives', on_delete=CASCADE)
-    instructor = models.ForeignKey(Instructor, related_name='theInstructor', on_delete=CASCADE)
-    taught_start = models.DateField()
-    taught_end = models.DateField()
-    student_count = models.IntegerField()
-    pass_rate = models.IntegerField()
-    drop_rate = models.IntegerField()
+status_code = [
+    ('0', 'Present'),
+    ('1', 'Late'),
+    ('2', 'Absent'),
+    ('3', 'Dropped'),
+    ('4', 'Postponed'),
+    ('5', 'Rollback')
+]
 
 # current class student and person marking present
 # Internal to django pages API
@@ -134,4 +122,4 @@ class Attendance(models.Model):
     hive_attendance = models.ForeignKey(Hive, related_name='theHiveAttendance', on_delete=CASCADE)
     bee_attendance = models.ForeignKey(Bee, related_name='theBeeAttendance', on_delete=CASCADE)
     marked_by = models.ForeignKey(Instructor, related_name='theMarkingInstructor', on_delete=CASCADE)
-    attended = models.BooleanField(default=0)
+    attendance_status = models.CharField(max_length=255, choices=status_code, null=True, blank=True)

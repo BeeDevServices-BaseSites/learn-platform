@@ -23,6 +23,7 @@ fire date
 FK-user
 
 #### Add Staff Roles
+(This will be like a many to many table as staff might have more than 1 role)
 role (list of choices)
 FK-staff
 
@@ -31,6 +32,7 @@ department
 FK-Staff - supervisor
 
 ##### Add department staff
+(This is also like a many to many as staff may be apart of more than 1 department)
 FK-department
 FK-staff
 
@@ -40,13 +42,15 @@ staff contact
 FK-user
 
 #### Add Learner Roles
+(many to many table as learners might have more than one role)
 role (list of roles)
 FK-learner
 
 # Finance App
 
 ## Pay Rates
-level
+level - M1 (management level 1)
+pay type - hourly vs salary
 payrate
 
 ### Add Staff Pay

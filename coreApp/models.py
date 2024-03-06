@@ -109,10 +109,11 @@ class DepartmentStaff(models.Model):
 # if is_staff == 0
     
 learner_roles = [
-    ('0', 'Student'),
-    ('1', 'Tutee'),
+    ('0', 'Current Student'),
+    ('1', 'Current Tutee'),
     ('2', 'Alumni'),
     ('3', 'Intern'),
+    ('4', 'Prospective Learner')
 ]
     
 class Learner(models.Model):
