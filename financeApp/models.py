@@ -34,16 +34,25 @@ class Program(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
     program = models.CharField(max_length=255, choices=program_types, default=0)
     cost = models.IntegerField(blank=True, null=True)
+    start_date = models.DateField(blank=True, null=True)
     is_active = models.BooleanField(default=1)
     length = models.IntegerField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
 
 
 class Tuition(models.Model):
-    invoice_date = models.DateField(blank=True, null=True)
-    finance_date = models.DateField(blank=True, null=True)
-    finance_flexxbuy_reported = models.DateField(blank=True, null=True)
+    # this is for flexxbuy and paypal
+    # invoice_date = models.DateField(blank=True, null=True)
+    # flexxbuy only
+    # finance_date = models.DateField(blank=True, null=True)
+    # finance_flexxbuy_reported = models.DateField(blank=True, null=True)
+    # paypal and flexxbuy (this will be same date for paypal)
     paid_date = models.DateField(blank=True, null=True)
     payer = models.ForeignKey(Learner, related_name='thePayer', on_delete=CASCADE)
     program = models.ForeignKey(Program, related_name='theProgram', on_delete=CASCADE, default=1)
+    # for tutoring
+    credit_balance = models.IntegerField(blank=True, null=True)
+    paid_cost = models.DecimalField(blank=True, null=True)
+
+
 

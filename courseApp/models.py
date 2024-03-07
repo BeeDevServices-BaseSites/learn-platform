@@ -32,6 +32,8 @@ class BeeType(models.Model):
 class Bee(models.Model):
     level = models.ForeignKey(BeeType, related_name="theBeeType", on_delete=CASCADE)
     bee = models.ForeignKey(Learner, related_name="theBee", on_delete=CASCADE)
+    program_start = models.DateField(blank=True, null=True)
+    program_graduation = models.DateField(blank=True, null=True)
 
 # Tutoring match
 class TutorMatch(models.Model):
@@ -41,11 +43,15 @@ class TutorMatch(models.Model):
 # Tutoring in general
     # API for stats
 class Tutoring(models.Model):
-    credits_required = models.IntegerField()
+    credits_required = models.IntegerField(blank=True, null=True)
     session_length = models.CharField(max_length=255, blank=True, null=True)
     pair = models.ForeignKey(TutorMatch, related_name='thePair', on_delete=CASCADE)
-    session_date = models.DateTimeField()
+    session_date = models.DateTimeField(blank=True, null=True)
+    cancel_date = models.DateTimeField(blank=True, null=True)
     is_scheduled = models.BooleanField(default=0)
+    is_canceled = models.BooleanField(default=0)
+    # next 2 will reduce credit balance if true
+    is_canceled_short_notice = models.BooleanField(default=0)
     is_completed = models.BooleanField(default=0)
     notes = models.TextField(blank=True, null=True)
 
@@ -60,14 +66,13 @@ class RepoUrl(models.Model):
     url = models.CharField(max_length=255, blank=True, null=True)
     repo_purpose = models.CharField(max_length=255, choices=repo_type, default=1)
 
-
 # Over all course ie Intro to programming
 class Course(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
     course_length = models.CharField(max_length=255, blank=True, null=True)
     course_info = models.TextField(blank=True, null=True)
     is_active = models.BooleanField(default=1)
-    root_Program = models.CharField(max_length=255, choices=program_types, default=0)
+    root_Program = models.ForeignKey(Program, related_name="theRootProgram", on_delete=CASCADE, blank=True, null=True)
 
 
 # Course content to include a page with a link to assignment (assignment link must open in new tab)
