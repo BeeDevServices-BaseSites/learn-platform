@@ -21,19 +21,20 @@ def index(request):
         'title': 'Home',
         'header': 'TechByte Learning',
     }
-    if 'user_id' not in request.session:
-        user = False
     allUsers = User.objects.all().values()
     if not allUsers:
         return redirect('/queen/bees/admin-register/')
-    if 'user_id' in request.session:
-        user = User.objects.get(id=request.session['user_id'])
-        return redirect('/dashboard/')
-    context = {
-        'title': title,
-        'user': user,
-    }
-    return render(request, 'index.html', context)
+    else:
+        if 'user_id' in request.session:
+            user = User.objects.get(id=request.session['user_id'])
+            return redirect('/dashboard/')
+        else:
+            user = False
+            context = {
+                'title': title,
+                'user': user,
+            }
+            return render(request, 'index.html', context)
 
 def dashboard(request):
     title = {
@@ -55,10 +56,7 @@ def admin_register(request):
         'title': 'Queen Bees Admin Register',
         'header': 'TechByte Learning',
     }
-    if 'user_id' not in request.session:
-        user = False
-        return redirect('/')
-    user = User.objects.get(id=request.session['user_id'])
+    user = False
     context = {
         'title': title,
         'user': user,
@@ -69,7 +67,6 @@ def logout(request):
     request.session.clear()
     messages.error(request, 'You have been logged out')
     return redirect('/')
-
 
 def set_password(request):
     title = {
@@ -85,3 +82,34 @@ def set_password(request):
         'user': user,
     }
     return render(request, 'setPassword.html', context)
+
+
+def add_user(request):
+    title = {
+        'title': 'Update Password',
+        'header': 'TechByte Learning',
+    }
+    if 'user_id' not in request.session:
+        user = False
+        return redirect('/')
+    user = User.objects.get(id=request.session['user_id'])
+    context = {
+        'title': title,
+        'user': user,
+    }
+    return render(request, 'addUser.html', context)
+
+def profile(request):
+    title = {
+        'title': 'Update Password',
+        'header': 'TechByte Learning',
+    }
+    if 'user_id' not in request.session:
+        user = False
+        return redirect('/')
+    user = User.objects.get(id=request.session['user_id'])
+    context = {
+        'title': title,
+        'user': user,
+    }
+    return render(request, 'profile.html', context)

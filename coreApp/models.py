@@ -35,14 +35,13 @@ class UserManager(models.Manager):
 # All users regardless of student or staff
     # API needed for stats to include profile roles
 
-    # Levels = 0 never logged in | 1 = logged in | 24 = superadmin
 class User(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
     is_active = models.BooleanField(default=1)
-    is_default_pass =  models.BooleanField(default=0)
+    is_default_pass =  models.BooleanField(default=1)
 
     objects = UserManager()
 
@@ -61,7 +60,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
     # 0 = not staff | 1 = staff
     is_staff = models.BooleanField(default=0)
-    image = models.ImageField(upload_to='profileImgs', default='bee.jpg')
+    image = models.ImageField(upload_to='profileImgs', default='bee.png')
     address01 = models.CharField(max_length=255, blank=True, null=True)
     address02 = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=255, blank=True, null=True)
@@ -69,7 +68,7 @@ class Profile(models.Model):
     zip_code = models.CharField(max_length=255, blank=True, null=True)
     phone = models.CharField(max_length=255, blank=True, null=True)
     def __str__(self):
-        return f'{self.user.username} Profile'
+        return f'{self.user.first_name} Profile'
     
 def create_user_profile(sender, instance, created, **kwargs):
     

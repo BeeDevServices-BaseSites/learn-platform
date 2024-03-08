@@ -8,7 +8,7 @@ from coreApp.models import *
 class PayRates(models.Model):
     pay_tier = models.CharField(max_length=255, blank=True, null=True)
     pay_classification = models.CharField(max_length=255, blank=True, null=True)
-    pay_rate = models.IntegerField(blank=True, null=True)
+    pay_rate = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
 class StaffPay(models.Model):
     employee = models.ForeignKey(Staff, related_name='theEmployee', on_delete=CASCADE)
@@ -33,7 +33,7 @@ program_types = [
 class Program(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
     program = models.CharField(max_length=255, choices=program_types, default=0)
-    cost = models.IntegerField(blank=True, null=True)
+    cost = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     start_date = models.DateField(blank=True, null=True)
     is_active = models.BooleanField(default=1)
     length = models.IntegerField(blank=True, null=True)
@@ -52,7 +52,7 @@ class Tuition(models.Model):
     program = models.ForeignKey(Program, related_name='theProgram', on_delete=CASCADE, default=1)
     # for tutoring
     credit_balance = models.IntegerField(blank=True, null=True)
-    paid_cost = models.DecimalField(blank=True, null=True)
+    paid_cost = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
 
 

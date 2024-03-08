@@ -22,7 +22,7 @@ def login(request):
         userLogin = user[0]
         if bcrypt.checkpw(request.POST['password'].encode(), userLogin.password.encode()):
             request.session['user_id'] = userLogin.id
-            if userLogin.is_default_pass == 0:
+            if userLogin.is_default_pass == 1:
                 messages.error(request, 'Welcome please create a new password!')
                 return redirect('/set-password/')
             else:
@@ -58,7 +58,9 @@ def register(request):
     request.session['user_id'] = newUser.id
     if newUser.id == 1:
         toUpdate = User.objects.get(id=request.session['user_id'])
-        toUpdate.is_default_pass=24
+        toUpdate.is_default_pass=0
+        toUpdate.profile.is_staff=1
         toUpdate.save()
     messages.error(request, f'Welcome {newUser.first_name}')
     return redirect('/dashboard')
+

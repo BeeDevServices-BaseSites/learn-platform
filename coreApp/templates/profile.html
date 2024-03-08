@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    {% block head %} {% include 'base/head.html' %} {% endblock head %}
+<body>
+    {% block header %} {% include 'base/header.html' %} {% endblock header %}
+    {% block flash %} {% include 'base/flash.html' %} {% endblock flash %}
+    <main>
+        <h2>Profile</h2>
+        <section>
+            <h2>{{user.first_name}} {{user.last_name}}</h2>
+            <ul>
+                <li>{{user.email}}</li>
+                {% if user.profile.is_staff == 1 %}
+                    <li>Staff Member</li>
+                {% endif %}
+                <img src="{{user.profile.image.url}}" alt="">
+            </ul>
+        </section>
+        <section>
+            <h2>Address</h2>
+            <address>
+                {% if user.profile.city %}
+                    {{user.profile.address01}} <br>
+                    {{user.profile.address02}} <br>
+                    {{user.profile.city}} {{user.profile.state}} {{user.profile.zip_code}} <br>
+                {% else %}
+                    No Address information at this time <br>
+                {% endif %}
+                {% if user.profile.phone %}
+                    {{user.profile.phone}} <br>
+                {% else %}
+                    No phone number at this time <br>
+                {% endif %}
+                
+            </address>
+        </section>
+    </main>
+    {% block footer %} {% include 'base/footer.html'  %} {% endblock %}
+</body>
+</html>
